@@ -32,31 +32,44 @@ for row in cur.execute("SELECT DISTINCT type FROM attraction"):
 
 # Grab all Attractions that are rides
 allRides= []
-for row in cur.execute("SELECT AttractionID FROM attraction WHERE Category LIKE '%Ride%' "):
+for row in cur.execute("SELECT AttractionID FROM attraction WHERE Category LIKE '%ride%' "):
     allRides.append(row[0])
+print(allRides)
+
+# Grab all Attractions that are rides
+allFood= []
+for row in cur.execute("SELECT AttractionID FROM attraction WHERE Category LIKE '%food%' "):
+    allFood.append(row[0])
+
+
+
+
+resurantVistCount = []
+for Resturant in allFood:
+     for row in cur.execute("SELECT count(*) FROM checkin WHERE attraction =" + str(Resturant)):
+        resurantVistCount.append([Resturant,row[0]])
+print(resurantVistCount[0][0])
+
+allridesAVG = []
+for rides in allRides:
+    for row in cur.execute("SELECT AVG(duration) FROM checkin WHERE attraction =" + str(rides)):
+        allridesAVG.append([rides,row[0]])
+sorter = (lambda x : (x[1]))
+allridesAVGSorted = sorted(allridesAVG, key=sorter, reverse=True)
+print(allridesAVGSorted[0][0])
 
 # Grab count of all attractions by ID
 # https://stackoverflow.com/questions/19793189/get-count-for-each-distinct-value
 attractionsAndNumberOfCheckins = []
 for row in cur.execute("SELECT attraction, count(*) as 'num'  FROM checkin GROUP BY attraction"):
     attractionsAndNumberOfCheckins.append(row)
-
-# Grab count of all food attractions by ID
-# https://stackoverflow.com/questions/19793189/get-count-for-each-distinct-value
-attractionsAndNumberOfCheckinsAtFood = []
-for row in cur.execute("SELECT checkin.attraction, count(*) as 'num'  FROM checkin, attraction WHERE attraction.Category LIKE '%food%' GROUP BY attraction "):
-    attractionsAndNumberOfCheckinsAtFood.append(row)
-    print(attractionsAndNumberOfCheckinsAtFood)
-
-# Rank attrations by what is most visted.
-# https://stackoverflow.com/questions/31942169/python-sort-array-of-arrays-by-multiple-conditions
 sorter = (lambda x : (x[1]))
-rankedAttractionsIDs = sorted(attractionsAndNumberOfCheckins, key=sorter, reverse=True)
+attractionsAndNumberOfCheckinsSorted = sorted(attractionsAndNumberOfCheckins, key=sorter, reverse=True)
 
 # Some of the ranked Attractions that might be used later.
-mostPopularAttractionID = rankedAttractionsIDs[0][0]
-leastPopularAttractionID = rankedAttractionsIDs[-1][0]
-secondLeastPopularAttractionID = rankedAttractionsIDs[-2][0]
+mostPopularAttractionID = attractionsAndNumberOfCheckinsSorted[0][0]
+leastPopularAttractionID = attractionsAndNumberOfCheckinsSorted[-1][0]
+secondLeastPopularAttractionID = attractionsAndNumberOfCheckinsSorted[-2][0]
 
 # Question 1 - Answer, most popular attraction to visit
 # https://www.w3schools.com/sql/sql_where.asp
@@ -93,7 +106,7 @@ for row in cur.execute("SELECT attraction, duration FROM checkin WHERE attractio
 sorter = (lambda x : (x[0]))
 sortedArrayOfRidesAndDuration = sorted(arrayOfRidesAndDuration, key=sorter)
 
-# Get Avg of all rides each
+# Get Avg of all rides each ( Testing method - did not work)
 arrayOfRidesDurationAvgs = []
 count = 0
 sum = 0
@@ -125,17 +138,23 @@ arrayOfRidesDurationAvgsShortedToLongest = sorted(arrayOfRidesDurationAvgs, key=
 # Second Longest AVG wait for Rides, ID number
 secondLeastPopularRideID = arrayOfRidesDurationAvgs[-2][0]
 SecondLeastPopularAttractionArray = []
-for row in cur.execute("SELECT Name FROM attraction WHERE AttractionID=" + str(secondLeastPopularRideID)):
+for row in cur.execute("SELECT Name FROM attraction WHERE AttractionID=" + str(allridesAVGSorted[0][0])):
    SecondLeastPopularAttractionArray.append(row)
 
 SecondLeastPopularAttraction = SecondLeastPopularAttractionArray[0][0]
 print(SecondLeastPopularAttraction)
+
 # Question 3 Least visited Resturant
+fewestVistesFoodArray = []
+for row in cur.execute("SELECT Name FROM attraction WHERE AttractionID=" + str(resurantVistCount[0][0])):
+   fewestVistesFoodArray.append(row)
 
-sorter = (lambda x : (x[1]))
-sortedAttractionsAndNumberOfCheckinsAtFood = sorted(attractionsAndNumberOfCheckinsAtFood, key=sorter)
+print(fewestVistesFoodArray)
+fewestVistesFood = fewestVistesFoodArray[0][0]
+print(fewestVistesFood)
 
-print(attractionsAndNumberOfCheckinsAtFood)
+
+
 
 # Be sure to close the connection
 con.close()
