@@ -41,6 +41,13 @@ attractionsAndNumberOfCheckins = []
 for row in cur.execute("SELECT attraction, count(*) as 'num'  FROM checkin GROUP BY attraction"):
     attractionsAndNumberOfCheckins.append(row)
 
+# Grab count of all food attractions by ID
+# https://stackoverflow.com/questions/19793189/get-count-for-each-distinct-value
+attractionsAndNumberOfCheckinsAtFood = []
+for row in cur.execute("SELECT checkin.attraction, count(*) as 'num'  FROM checkin, attraction WHERE attraction.Category LIKE '%food%' GROUP BY attraction "):
+    attractionsAndNumberOfCheckinsAtFood.append(row)
+    print(attractionsAndNumberOfCheckinsAtFood)
+
 # Rank attrations by what is most visted.
 # https://stackoverflow.com/questions/31942169/python-sort-array-of-arrays-by-multiple-conditions
 sorter = (lambda x : (x[1]))
@@ -79,31 +86,56 @@ def get_sec(time_str):
 
 arrayOfRidesAndDuration = []
 
+#avg(checkin.duration)
+
 for row in cur.execute("SELECT attraction, duration FROM checkin WHERE attraction in (" + stringOfRides + ") AND duration IS NOT NULL"):
    arrayOfRidesAndDuration.append([row[0],get_sec(str(row[1]))])
 sorter = (lambda x : (x[0]))
 sortedArrayOfRidesAndDuration = sorted(arrayOfRidesAndDuration, key=sorter)
 
-
-arrayOfRidesDurationAvgs = [[0,0]]
+# Get Avg of all rides each
+arrayOfRidesDurationAvgs = []
 count = 0
 sum = 0
+currentNum = 0
+first = True
 for array in sortedArrayOfRidesAndDuration:
-    if(array[0] != arrayOfRidesDurationAvgs[count][0]):
-        arrayOfRidesDurationAvgs.append(array[0])
-        arrayOfRidesDurationAvgs[count][1] = array[1]
+    if(first):
+        arrayOfRidesDurationAvgs.append(array)
+        first = False
+        currentNum = array[0]
+        sum += array[1]
         count += 1
-        print(arrayOfRidesDurationAvgs)
-    #else:
-        #arrayOfRidesDurationAvgs[count] = 
+    elif(currentNum == array[0]):
+        sum += array[1]
+        arrayOfRidesDurationAvgs[len(arrayOfRidesDurationAvgs) - 1][1] = sum
+        count += 1
+    elif(currentNum != array[0]):
+        arrayOfRidesDurationAvgs[len(arrayOfRidesDurationAvgs) - 1][1] = round(sum/count, 3)
+        arrayOfRidesDurationAvgs.append(array)
+        count = 0
+        sum = 0
+        currentNum = array[0]
+arrayOfRidesDurationAvgs[len(arrayOfRidesDurationAvgs) - 1][1] = round(sum/count, 3)
+
+sorter = (lambda x : (x[1]))
+arrayOfRidesDurationAvgsShortedToLongest = sorted(arrayOfRidesDurationAvgs, key=sorter)
 
 
-    
+# Second Longest AVG wait for Rides, ID number
+secondLeastPopularRideID = arrayOfRidesDurationAvgs[-2][0]
+SecondLeastPopularAttractionArray = []
+for row in cur.execute("SELECT Name FROM attraction WHERE AttractionID=" + str(secondLeastPopularRideID)):
+   SecondLeastPopularAttractionArray.append(row)
 
-#for index in sortedArrayOfRidesAndDuration:
+SecondLeastPopularAttraction = SecondLeastPopularAttractionArray[0][0]
+print(SecondLeastPopularAttraction)
+# Question 3 Least visited Resturant
 
+sorter = (lambda x : (x[1]))
+sortedAttractionsAndNumberOfCheckinsAtFood = sorted(attractionsAndNumberOfCheckinsAtFood, key=sorter)
 
-
+print(attractionsAndNumberOfCheckinsAtFood)
 
 # Be sure to close the connection
 con.close()
