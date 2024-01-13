@@ -1,4 +1,3 @@
-import pandas as pd
 import sqlite3
 
 dbfile = r"C:\Users\Austi\Git\DataVisualizationCSE578\Assignments\dinofunworld.db"
