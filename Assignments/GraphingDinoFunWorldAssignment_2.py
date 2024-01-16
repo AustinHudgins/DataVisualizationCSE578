@@ -48,30 +48,52 @@ def barchart():
     plt.ylabel("Number of Visits")
     plt.title("Total Visits to Food Stalls")
 
-for row in cur.execute("SELECT attractionId FROM attraction where attraction.Name = 'Atmosfear'"):
-    attractionID = row[0]
-visitorIDandsequences = []
-for row in cur.execute("SELECT visitorID, sequence FROM sequences where sequence LIKE '%" + str(attractionID) + "%'"):
-    squence = row[1]
-    splitsquence = squence.split("-")
-    first196splitsquence = splitsquence[:196]
-    for i in range(0, len(first196splitsquence)):
-        first196splitsquence[i] = int(first196splitsquence[i])
-    visitorIDandsequences.append([row[0],first196splitsquence])
-    # visitorIDandsequences.append(row)
 
-manuStats = pd.DataFrame.from_records(visitorIDandsequences, columns=['visitor', 'sequence'])
+def linegraph():
+    for row in cur.execute("SELECT attractionId FROM attraction where attraction.Name = 'Atmosfear'"):
+        attractionID = row[0]
+    visitorIDandsequences = []
+    for row in cur.execute("SELECT visitorID, sequence FROM sequences where sequence LIKE '%" + str(attractionID) + "%'"):
+        squence = row[1]
+        splitsquence = squence.split("-")
+        first196splitsquence = splitsquence[:192]
+        for i in range(0, len(first196splitsquence)):
+            first196splitsquence[i] = int(first196splitsquence[i])
+            if (first196splitsquence[i] == int(attractionID)):
+                first196splitsquence[i] = 1
+            else:
+                first196splitsquence[i] = 0
+        visitorIDandsequences.append([row[0],first196splitsquence])
 
-#manuStats['sequence_list'] = manuStats['sequence'].apply(lambda s: [1 if x == str(attractionID) else 0 for x in s.split("-")])
-attendance = np.sum(manuStats['sequence'].values.tolist(), axis=0)
-x_axis_list = range(0, len(attendance)*5, 5)
-plt.plot(x_axis_list, attendance)
-plt.ylabel('Attendance')
-plt.xlabel('Time in minutes')
-plt.title('Attendance at Atmosfear')
+    manuStats = pd.DataFrame.from_records(visitorIDandsequences, columns=['visitor', 'sequence'])
+
+    visitors = np.sum(manuStats['sequence'].values.tolist(), axis=0)
+
+    every5mins = range(0, len(visitors)*5, 5)
+
+    plt.plot(every5mins, visitors)
+    plt.ylabel('Number of visits')
+    plt.xlabel('Time in minutes')
+    plt.title('Attendance at Atmosfear every 5 minutes')
+    plt.show()
+    result = [[every5mins[i], visitors[i]] for i in range(len(visitors))]
+    print(result)
+
+kiddieRidesVisits = []
+for row in cur.execute("SELECT count(checkin.visitorId) as COUNT FROM checkin LEFT JOIN attraction ON checkin.attraction = attraction.AttractionID WHERE attraction.Category LIKE '%kiddie%' GROUP BY attraction.Name ORDER BY COUNT"):
+    kiddieRidesVisits.append(row)
+
+manuStats = pd.DataFrame.from_records(kiddieRidesVisits, columns=['visits'])
+visitsSorted = []
+for ride in kiddieRidesVisits:
+ visitsSorted.append(ride[0])
+
+plt.boxplot(manuStats['visits'])
+plt.title('Total visits to rides in the Kiddie Rides category')
+plt.xlabel('Attraction')
+plt.ylabel('Visitor Count')
 plt.show()
-result = [[x_axis_list[i], attendance[i]] for i in range(len(x_axis_list))]
-#print(result)
-# Be sure to close the connection
+print(visitsSorted)
+# # Be sure to close the connection
 con.close()
                    
