@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import sqlite3
 
 dbfile = r"C:\Users\Austi\Git\DataVisualizationCSE578\Assignments\dinofunworld.db"
@@ -29,7 +30,7 @@ def pyChart():
 
     plt.pie(manuStats['Visists'], labels=manuStats['Rides'],shadow=False)		
     plt.title("Visits to Thrill Ride attractions")
-    plt.axis("equal")\
+    plt.axis("equal")
     
 def barchart():
     foodAndVisits = []
@@ -47,7 +48,30 @@ def barchart():
     plt.ylabel("Number of Visits")
     plt.title("Total Visits to Food Stalls")
 
+for row in cur.execute("SELECT attractionId FROM attraction where attraction.Name = 'Atmosfear'"):
+    attractionID = row[0]
+visitorIDandsequences = []
+for row in cur.execute("SELECT visitorID, sequence FROM sequences where sequence LIKE '%" + str(attractionID) + "%'"):
+    squence = row[1]
+    splitsquence = squence.split("-")
+    first196splitsquence = splitsquence[:196]
+    for i in range(0, len(first196splitsquence)):
+        first196splitsquence[i] = int(first196splitsquence[i])
+    visitorIDandsequences.append([row[0],first196splitsquence])
+    # visitorIDandsequences.append(row)
+
+manuStats = pd.DataFrame.from_records(visitorIDandsequences, columns=['visitor', 'sequence'])
+
+#manuStats['sequence_list'] = manuStats['sequence'].apply(lambda s: [1 if x == str(attractionID) else 0 for x in s.split("-")])
+attendance = np.sum(manuStats['sequence'].values.tolist(), axis=0)
+x_axis_list = range(0, len(attendance)*5, 5)
+plt.plot(x_axis_list, attendance)
+plt.ylabel('Attendance')
+plt.xlabel('Time in minutes')
+plt.title('Attendance at Atmosfear')
 plt.show()
+result = [[x_axis_list[i], attendance[i]] for i in range(len(x_axis_list))]
+#print(result)
 # Be sure to close the connection
 con.close()
                    
