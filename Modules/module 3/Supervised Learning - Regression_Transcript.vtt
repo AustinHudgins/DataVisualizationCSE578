@@ -1,0 +1,534 @@
+WEBVTT
+
+1
+00:00:00.950 --> 00:00:05.160
+Welcome back. Now we
+talk about regression.
+
+2
+00:00:05.160 --> 00:00:08.100
+This is the last of the three
+
+3
+00:00:08.100 --> 00:00:13.450
+supervised learning algorithms
+we are going to cover.
+
+4
+00:00:14.210 --> 00:00:21.030
+So let's have a very quick
+review of high-school algebra.
+
+5
+00:00:21.030 --> 00:00:22.770
+So, Y equals C,
+
+6
+00:00:22.770 --> 00:00:24.915
+C now is a constant.
+
+7
+00:00:24.915 --> 00:00:33.840
+If I have coordinates
+like this X and Y.
+
+8
+00:00:33.840 --> 00:00:38.385
+Y equal C that means X
+is out of the picture.
+
+9
+00:00:38.385 --> 00:00:40.380
+So we just have this.
+
+10
+00:00:40.380 --> 00:00:45.310
+This is the C So in this case,
+
+11
+00:00:45.590 --> 00:00:51.045
+Y equals Beta zero
+plus Beta one times X.
+
+12
+00:00:51.045 --> 00:00:58.365
+What is this?, It is X and Y.
+
+13
+00:00:58.365 --> 00:01:01.890
+So, we can randomly just pick
+one, something like this.
+
+14
+00:01:01.890 --> 00:01:06.410
+Okay. So, this one says,
+
+15
+00:01:06.690 --> 00:01:13.320
+this is Beta zero when X
+equals zero so it's here,
+
+16
+00:01:13.320 --> 00:01:16.490
+then beta one is
+the slope of this line.
+
+17
+00:01:16.490 --> 00:01:25.330
+But now let's look at this
+as the learning problem.
+
+18
+00:01:26.060 --> 00:01:29.385
+We have data points here.
+
+19
+00:01:29.385 --> 00:01:32.114
+Then we try to use
+
+20
+00:01:32.114 --> 00:01:38.620
+this line to approximate
+the function we want to learn.
+
+21
+00:01:38.620 --> 00:01:41.520
+Then, we have some errors.
+
+22
+00:01:41.520 --> 00:01:46.955
+Right?. So, that's why we write
+this in terms of Y minus,
+
+23
+00:01:46.955 --> 00:01:49.190
+it's the left-hand side minus
+
+24
+00:01:49.190 --> 00:01:52.135
+the right-hand side
+there's a error.
+
+25
+00:01:52.135 --> 00:01:53.715
+So how do we do?.
+
+26
+00:01:53.715 --> 00:01:56.520
+So we just say we have error now,
+
+27
+00:01:56.520 --> 00:02:02.025
+so we need to make
+sure whatever we do,
+
+28
+00:02:02.025 --> 00:02:03.975
+the error should be minimized.
+
+29
+00:02:03.975 --> 00:02:08.445
+How can we do that?. Well,
+the data sets that we have.
+
+30
+00:02:08.445 --> 00:02:11.485
+So now we have propersumer
+approximation.
+
+31
+00:02:11.485 --> 00:02:14.660
+In this case, I have
+so many data points.
+
+32
+00:02:14.660 --> 00:02:16.970
+But I want to find a simple model
+
+33
+00:02:16.970 --> 00:02:19.925
+to explain all of
+these data points.
+
+34
+00:02:19.925 --> 00:02:23.340
+In this case, the simplest
+
+35
+00:02:23.340 --> 00:02:26.760
+one I can say Y equals Beta zero.
+
+36
+00:02:26.760 --> 00:02:32.875
+So Beta zero now it is
+a parameter I want to estimate.
+
+37
+00:02:32.875 --> 00:02:36.030
+So I just to move
+along this Y axis.
+
+38
+00:02:36.030 --> 00:02:38.290
+Right?. I can do this.
+
+39
+00:02:38.530 --> 00:02:41.735
+It's very good that
+you see for all of
+
+40
+00:02:41.735 --> 00:02:43.925
+these data points errors is
+
+41
+00:02:43.925 --> 00:02:47.545
+small but not good for
+this error points.
+
+42
+00:02:47.545 --> 00:02:51.780
+So if I do this here then
+the problem is reversed.
+
+43
+00:02:51.780 --> 00:02:54.665
+Then good for these data points
+
+44
+00:02:54.665 --> 00:02:57.050
+not good for this data points.
+
+45
+00:02:57.050 --> 00:03:01.670
+So obviously there is
+an optimal data line.
+
+46
+00:03:01.670 --> 00:03:07.455
+Somewhere here, I can minimize
+the total number of errors.
+
+47
+00:03:07.455 --> 00:03:10.855
+So, this is like approximation
+
+48
+00:03:10.855 --> 00:03:12.875
+I tried to minimize the error.
+
+49
+00:03:12.875 --> 00:03:19.155
+Error equals Y minus beta zero.
+
+50
+00:03:19.155 --> 00:03:24.400
+More complicated case.
+In this case,
+
+51
+00:03:24.400 --> 00:03:26.450
+I have also these data points.
+
+52
+00:03:26.450 --> 00:03:29.130
+Obviously, I cannot use
+
+53
+00:03:29.840 --> 00:03:36.810
+constant line to
+approximate these points.
+
+54
+00:03:36.810 --> 00:03:38.760
+So, I can do this.
+
+55
+00:03:38.760 --> 00:03:43.290
+I can do this or I
+can also do this.
+
+56
+00:03:43.290 --> 00:03:49.950
+Alright. Now my issue
+is still epsilon
+
+57
+00:03:49.950 --> 00:03:58.620
+equals Y minus Beta
+zero plus Beta 1X,
+
+58
+00:03:58.620 --> 00:04:00.735
+I want to minimize the error.
+
+59
+00:04:00.735 --> 00:04:08.085
+So if we use
+this linear line here,
+
+60
+00:04:08.085 --> 00:04:09.795
+then this is the error.
+
+61
+00:04:09.795 --> 00:04:20.355
+Right?. You can
+
+62
+00:04:20.355 --> 00:04:22.065
+add this error.
+
+63
+00:04:22.065 --> 00:04:26.350
+So, we try to minimize
+the error and by
+
+64
+00:04:26.350 --> 00:04:31.315
+finding Beta zero and Beta one.
+
+65
+00:04:31.315 --> 00:04:34.539
+Because now I have
+so many data points,
+
+66
+00:04:34.539 --> 00:04:40.390
+I need another efficient
+representation for learning.
+
+67
+00:04:40.390 --> 00:04:45.325
+This is the case.
+Now in regression,
+
+68
+00:04:45.325 --> 00:04:48.235
+we have all these data points.
+
+69
+00:04:48.235 --> 00:04:49.810
+Of course I can find
+
+70
+00:04:49.810 --> 00:04:53.260
+a very complicated function
+
+71
+00:04:53.260 --> 00:04:56.865
+to fit all of these data points.
+
+72
+00:04:56.865 --> 00:04:58.680
+But is it necessary?
+
+73
+00:04:58.680 --> 00:05:01.410
+Is it good to do so?
+
+74
+00:05:01.410 --> 00:05:04.335
+Or we just use
+the linear regression.
+
+75
+00:05:04.335 --> 00:05:07.405
+The linear regression
+is just one line here.
+
+76
+00:05:07.405 --> 00:05:10.040
+It's a linear equation.
+
+77
+00:05:12.320 --> 00:05:17.720
+We can find one linear equation,
+
+78
+00:05:17.720 --> 00:05:19.550
+this is the pattern
+we would like to
+
+79
+00:05:19.550 --> 00:05:24.080
+learn to fit all of
+these data points.
+
+80
+00:05:24.080 --> 00:05:26.880
+Probably it can do a good job.
+
+81
+00:05:26.880 --> 00:05:32.085
+But if I also want to
+more complicated one,
+
+82
+00:05:32.085 --> 00:05:34.520
+I can do this right?
+
+83
+00:05:34.520 --> 00:05:37.795
+You say what's wrong with this.
+
+84
+00:05:37.795 --> 00:05:41.665
+Now this is of course
+not linear anymore.
+
+85
+00:05:41.665 --> 00:05:46.310
+One potential problem
+is called over-fit.
+
+86
+00:05:47.370 --> 00:05:51.145
+We don't want to
+over-fit our data
+
+87
+00:05:51.145 --> 00:05:56.550
+because we are performing
+learning task.
+
+88
+00:05:56.550 --> 00:06:01.885
+For learning, we don't just
+deal with what we have now.
+
+89
+00:06:01.885 --> 00:06:07.460
+We want to work on something
+in the future we don't know.
+
+90
+00:06:07.790 --> 00:06:14.950
+In most cases,
+a simple model works well.
+
+91
+00:06:17.510 --> 00:06:21.100
+So now when we have data points
+
+92
+00:06:21.100 --> 00:06:23.990
+more than one or two and many,
+
+93
+00:06:23.990 --> 00:06:25.985
+we can use a convenient
+
+94
+00:06:25.985 --> 00:06:28.790
+representation matrix
+to represent.
+
+95
+00:06:28.790 --> 00:06:35.204
+So, the previous equation
+we can rewrite into Y,
+
+96
+00:06:35.204 --> 00:06:40.050
+this is a vector and
+X is a matrix and
+
+97
+00:06:40.050 --> 00:06:45.910
+W. Now these are the parameters
+we want to estimate.
+
+98
+00:06:45.910 --> 00:06:50.220
+Then we also have epsilon,
+this is the error.
+
+99
+00:06:50.220 --> 00:06:54.615
+So now we need to
+minimize the error.
+
+100
+00:06:54.615 --> 00:06:57.800
+But error can be
+positive or negative.
+
+101
+00:06:57.800 --> 00:06:59.420
+In the previous slide we can
+
+102
+00:06:59.420 --> 00:07:02.015
+see error can be
+positive and negative.
+
+103
+00:07:02.015 --> 00:07:04.550
+That's why we usually either
+
+104
+00:07:04.550 --> 00:07:11.205
+use error square or
+absolute values.
+
+105
+00:07:11.205 --> 00:07:16.485
+In this case we use
+squares, the error squares.
+
+106
+00:07:16.485 --> 00:07:19.200
+So that they don't
+cancel each other.
+
+107
+00:07:19.200 --> 00:07:20.740
+Because positive and negatives
+
+108
+00:07:20.740 --> 00:07:22.540
+errors do cancel each other.
+
+109
+00:07:22.540 --> 00:07:25.835
+Then we want to
+minimize the error.
+
+110
+00:07:25.835 --> 00:07:28.700
+It's called the
+least square method.
+
+111
+00:07:28.700 --> 00:07:32.860
+This method is so
+popular and you can
+
+112
+00:07:32.860 --> 00:07:38.180
+find almost in
+all software package.
+
+113
+00:07:38.180 --> 00:07:40.040
+So you just need to rewrite
+
+114
+00:07:40.040 --> 00:07:42.440
+the data into this form and pick
+
+115
+00:07:42.440 --> 00:07:48.705
+the error formula and
+then you can find W,
+
+116
+00:07:48.705 --> 00:07:57.075
+W is a set of coefficients
+we want to learn.
+
+117
+00:07:57.075 --> 00:08:03.970
+That's all for supervised
+learning segment. Thank you.

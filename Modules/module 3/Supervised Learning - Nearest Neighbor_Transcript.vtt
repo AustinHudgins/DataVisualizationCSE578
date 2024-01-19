@@ -1,0 +1,785 @@
+WEBVTT
+
+1
+00:00:00.040 --> 00:00:04.625
+Welcome back. This is Huan Liu,
+
+2
+00:00:04.625 --> 00:00:12.820
+and we will discuss nearest neighbor classifier.
+
+3
+00:00:12.820 --> 00:00:17.870
+This is a very intuitive learning method.
+
+4
+00:00:18.660 --> 00:00:21.825
+Now, we start with another data set.
+
+5
+00:00:21.825 --> 00:00:24.875
+In this data set, that we have
+
+6
+00:00:24.875 --> 00:00:33.415
+total eight instances but if you notice the last one it has a question mark.
+
+7
+00:00:33.415 --> 00:00:37.790
+That means we don't know about its class.
+
+8
+00:00:37.790 --> 00:00:41.645
+What's the class value the right to predict?
+
+9
+00:00:41.645 --> 00:00:44.440
+It's play golf or not.
+
+10
+00:00:44.670 --> 00:00:52.670
+So, in this case we have three also three attributes; outlook, temperature, humidity.
+
+11
+00:00:52.670 --> 00:01:00.870
+And then the class level is about play golf so we have yes or no.
+
+12
+00:01:00.870 --> 00:01:05.260
+And for the first seven instances,
+
+13
+00:01:05.260 --> 00:01:07.880
+we know their class labels,
+
+14
+00:01:07.880 --> 00:01:10.715
+but for the last one we don't.
+
+15
+00:01:10.715 --> 00:01:20.900
+For outlook, actually we have three values; sunny, overcast, rain.
+
+16
+00:01:20.900 --> 00:01:28.530
+And for temperature we can also have some values like hot, mild, and cool.
+
+17
+00:01:28.530 --> 00:01:33.480
+Humidity, high, normal, high.
+
+18
+00:01:34.000 --> 00:01:37.510
+And for these values,
+
+19
+00:01:37.510 --> 00:01:42.875
+we have with the known training data,
+
+20
+00:01:42.875 --> 00:01:47.480
+we want to know what is the class label for the last one.
+
+21
+00:01:47.480 --> 00:01:54.270
+So, very easy way is for this small data set,
+
+22
+00:01:54.270 --> 00:01:58.760
+we just compare the last instance.
+
+23
+00:01:58.760 --> 00:02:03.280
+Iwith all the seven instances, right?
+
+24
+00:02:03.280 --> 00:02:11.675
+If we can find a similar one or the most similar one,
+
+25
+00:02:11.675 --> 00:02:18.275
+then we just say because they are the most similar pair and we just use
+
+26
+00:02:18.275 --> 00:02:26.950
+the one we found was known class and give it the same class to the unknown class.
+
+27
+00:02:26.950 --> 00:02:30.760
+Which was this most similar one?
+
+28
+00:02:30.760 --> 00:02:41.640
+We have to break down the data set or to tell us and use some distance measure.
+
+29
+00:02:41.640 --> 00:02:45.825
+Now, for similarity, if we use distance,
+
+30
+00:02:45.825 --> 00:02:47.510
+if distance is zero,
+
+31
+00:02:47.510 --> 00:02:50.660
+that means they're exactly the same.
+
+32
+00:02:50.660 --> 00:02:53.570
+If the larger the distance,
+
+33
+00:02:53.570 --> 00:02:59.175
+the more dissimilar they are.
+
+34
+00:02:59.175 --> 00:03:05.140
+We just need to figure out some distance measure then we
+
+35
+00:03:05.140 --> 00:03:12.210
+can calculate how similar they are.
+
+36
+00:03:12.210 --> 00:03:14.335
+Now, in this case,
+
+37
+00:03:14.335 --> 00:03:18.030
+we have six clusters of
+
+38
+00:03:18.030 --> 00:03:26.875
+data points and if the unknown data point falls into one of them,
+
+39
+00:03:26.875 --> 00:03:30.440
+let's assume the shapes are class labelled.
+
+40
+00:03:30.440 --> 00:03:38.135
+Then if that data point is here because it's closest to this cluster,
+
+41
+00:03:38.135 --> 00:03:40.720
+then we just say this is square,
+
+42
+00:03:40.720 --> 00:03:46.220
+and because it's farther away from the other clusters.
+
+43
+00:03:46.270 --> 00:03:50.165
+Now, in this case,
+
+44
+00:03:50.165 --> 00:03:52.390
+we call it one nearest neighbor.
+
+45
+00:03:52.390 --> 00:03:59.510
+We only need to find wherever the nearest instance
+
+46
+00:03:59.510 --> 00:04:08.850
+then we will be able to give this instance class label to the unknown one.
+
+47
+00:04:08.960 --> 00:04:11.830
+Why do we need the k then?
+
+48
+00:04:11.830 --> 00:04:16.260
+Now, let's look at the situation here.
+
+49
+00:04:19.190 --> 00:04:25.925
+If we just use one nearest neighbor,
+
+50
+00:04:25.925 --> 00:04:29.775
+let's assume this is the nearest one.
+
+51
+00:04:29.775 --> 00:04:33.835
+Then for the question mark instance,
+
+52
+00:04:33.835 --> 00:04:38.130
+we will give it class label square.
+
+53
+00:04:38.130 --> 00:04:40.345
+But if we look beyond,
+
+54
+00:04:40.345 --> 00:04:44.280
+let's look at five nearest neighbor,
+
+55
+00:04:44.280 --> 00:04:49.390
+then the class label becomes triangle,
+
+56
+00:04:49.390 --> 00:04:52.995
+but we can even go further.
+
+57
+00:04:52.995 --> 00:04:58.435
+And if you look at 10 nearest neighbor,
+
+58
+00:04:58.435 --> 00:05:01.865
+then it becomes square so, you see.
+
+59
+00:05:01.865 --> 00:05:08.270
+So, one nearest neighbor is square,
+
+60
+00:05:08.270 --> 00:05:15.580
+five nearest neighbor is triangle
+
+61
+00:05:15.580 --> 00:05:23.720
+and 10 nearest neighbor it is square again.
+
+62
+00:05:23.720 --> 00:05:30.850
+It depends on the k you will have different class label.
+
+63
+00:05:31.470 --> 00:05:39.015
+We cannot just use one nearest neighbor because it's too sensitive to noise.
+
+64
+00:05:39.015 --> 00:05:47.500
+In reality, our data set always contains some noise.
+
+65
+00:05:51.440 --> 00:05:56.925
+So, k-nearest neighbor is a very intuitive method.
+
+66
+00:05:56.925 --> 00:06:00.915
+We just need to define what k would we like.
+
+67
+00:06:00.915 --> 00:06:10.295
+Then we figure out what other k-nearest instances, their neighbors,
+
+68
+00:06:10.295 --> 00:06:13.340
+then we say, "Hey,
+
+69
+00:06:13.340 --> 00:06:23.430
+what are these neighbors class should be the unknown instances class?"
+
+70
+00:06:24.530 --> 00:06:28.125
+And k equals one.
+
+71
+00:06:28.125 --> 00:06:33.395
+It is not robust to noise.
+
+72
+00:06:33.395 --> 00:06:38.600
+So, usually, we will choose k is
+
+73
+00:06:38.600 --> 00:06:43.910
+an odd number like a three, five, seven.
+
+74
+00:06:43.910 --> 00:06:50.740
+And after we determine what a k is,
+
+75
+00:06:50.740 --> 00:06:58.340
+we also need to choose a distance match to calculate the distance.
+
+76
+00:06:59.200 --> 00:07:02.400
+We're back to this example.
+
+77
+00:07:03.030 --> 00:07:07.450
+And again, we say we
+
+78
+00:07:07.450 --> 00:07:14.725
+have seven instances with known class labels,
+
+79
+00:07:14.725 --> 00:07:20.000
+but the last one or the right two predict,
+
+80
+00:07:20.000 --> 00:07:25.600
+should we go for golf playing or not?
+
+81
+00:07:25.600 --> 00:07:35.810
+This table, it is organized in terms of the k. So if we choose k equals one,
+
+82
+00:07:35.810 --> 00:07:39.835
+just one nearest the neighbor, what happens?
+
+83
+00:07:39.835 --> 00:07:44.875
+If we choose k as two,
+
+84
+00:07:44.875 --> 00:07:48.330
+two the nearest neighbor, what happens?
+
+85
+00:07:48.330 --> 00:07:55.620
+Usually, we don't try to have an even number of k. Okay, why?
+
+86
+00:07:55.620 --> 00:07:59.120
+Because when it's 50/50,
+
+87
+00:07:59.120 --> 00:08:00.710
+it is difficult to decide.
+
+88
+00:08:00.710 --> 00:08:02.785
+You will see some examples later.
+
+89
+00:08:02.785 --> 00:08:12.390
+Okay? So now, if we just use one nearest the neighbor,
+
+90
+00:08:12.390 --> 00:08:17.555
+then number two instance,
+
+91
+00:08:17.555 --> 00:08:19.940
+it's the most similar.
+
+92
+00:08:19.940 --> 00:08:23.145
+Here, we use a very simple method.
+
+93
+00:08:23.145 --> 00:08:30.310
+If the two values are the same, then it's one.
+
+94
+00:08:30.310 --> 00:08:33.935
+If otherwise, it is zero.
+
+95
+00:08:33.935 --> 00:08:39.675
+Okay? So, because we try to measure similarity.
+
+96
+00:08:39.675 --> 00:08:43.065
+If the two values are the same, it is one.
+
+97
+00:08:43.065 --> 00:08:45.030
+Now look at two.
+
+98
+00:08:45.030 --> 00:08:49.870
+Two outlook value is sunny and
+
+99
+00:08:49.870 --> 00:08:56.205
+for this eight's instance outlook value is also sunny.
+
+100
+00:08:56.205 --> 00:09:05.475
+Temperature is mild, temperature is mild for this one.
+
+101
+00:09:05.475 --> 00:09:08.965
+Humidity is a high, humidity is a high.
+
+102
+00:09:08.965 --> 00:09:12.670
+So then, we say because this class label is N,
+
+103
+00:09:12.670 --> 00:09:17.320
+we give this N. N means when no.
+
+104
+00:09:17.320 --> 00:09:24.475
+Okay. This is for the case of k one nearest the neighbor.
+
+105
+00:09:24.475 --> 00:09:26.085
+If we look at the two,
+
+106
+00:09:26.085 --> 00:09:28.445
+then two nearest the neighbor,
+
+107
+00:09:28.445 --> 00:09:37.640
+then you will find the class label should be N. This is the N here.
+
+108
+00:09:37.640 --> 00:09:45.335
+And the instance we use to decide the label is one,
+
+109
+00:09:45.335 --> 00:09:47.105
+here one and two.
+
+110
+00:09:47.105 --> 00:09:53.690
+You see, both when k equals two we have these two instance to decide.
+
+111
+00:09:53.690 --> 00:09:56.220
+And this N both are N,
+
+112
+00:09:56.220 --> 00:10:00.130
+so we decide to give the provision N. But now,
+
+113
+00:10:00.130 --> 00:10:01.735
+when it's a three,
+
+114
+00:10:01.735 --> 00:10:03.940
+we have these top three.
+
+115
+00:10:03.940 --> 00:10:07.715
+When k is equals to three, then we have top three.
+
+116
+00:10:07.715 --> 00:10:10.470
+Then because N is the majority,
+
+117
+00:10:10.470 --> 00:10:14.055
+we still give it to N. Now,
+
+118
+00:10:14.055 --> 00:10:16.505
+look at k equals four,
+
+119
+00:10:16.505 --> 00:10:22.205
+then we have an even number of N and Y,
+
+120
+00:10:22.205 --> 00:10:26.440
+like two Ns and two Ys.
+
+121
+00:10:26.440 --> 00:10:28.635
+Now, it's difficult to decide.
+
+122
+00:10:28.635 --> 00:10:33.435
+That's why we usually try to avoid using
+
+123
+00:10:33.435 --> 00:10:39.160
+even number for k. But if it happens, what should we do?
+
+124
+00:10:39.160 --> 00:10:44.140
+We always just flip a coin and decide.
+
+125
+00:10:44.140 --> 00:10:49.470
+Okay? So now, if k equals five,
+
+126
+00:10:49.470 --> 00:10:53.925
+then you see, I have two Ns, three Ys.
+
+127
+00:10:53.925 --> 00:10:58.290
+In this case, I just give it Y as the class label.
+
+128
+00:11:01.770 --> 00:11:08.280
+This is the algorithm given in the book.
+
+129
+00:11:08.280 --> 00:11:15.685
+If you are interested, there's the book we use for reference,
+
+130
+00:11:15.685 --> 00:11:18.540
+it's called the Social Media Mining.
+
+131
+00:11:26.230 --> 00:11:31.475
+And it's available for free download.
+
+132
+00:11:31.475 --> 00:11:35.945
+There you can get all these hours and beyond
+
+133
+00:11:35.945 --> 00:11:42.250
+what we talk about here. So k-Nearest Neighbor.
+
+134
+00:11:42.250 --> 00:11:46.005
+First, we need to have an instance i,
+
+135
+00:11:46.005 --> 00:11:48.820
+a data set of real-attribute values,
+
+136
+00:11:48.820 --> 00:11:55.780
+and then we need to decide k. How many neighbors we should consider?
+
+137
+00:11:55.780 --> 00:11:59.660
+Then we pick a distance measure.
+
+138
+00:11:59.660 --> 00:12:04.670
+Previously, we just choose a very simple one, right?
+
+139
+00:12:04.670 --> 00:12:07.170
+If they are the same value, then it's one.
+
+140
+00:12:07.170 --> 00:12:09.730
+If otherwise, it's a zero.
+
+141
+00:12:09.730 --> 00:12:13.170
+So we compute k-nearest the neighbors,
+
+142
+00:12:13.170 --> 00:12:17.005
+then we find the majority class label.
+
+143
+00:12:17.005 --> 00:12:18.605
+We will give it to
+
+144
+00:12:18.605 --> 00:12:26.140
+L. We classify this instance
+
+145
+00:12:26.140 --> 00:12:29.000
+i as a class L. So,
+
+146
+00:12:29.000 --> 00:12:35.590
+here, we say if more than one majority label is available,
+
+147
+00:12:35.590 --> 00:12:38.210
+we just select one randomly.
+
+148
+00:12:38.750 --> 00:12:41.140
+There are two majority labels,
+
+149
+00:12:41.140 --> 00:12:43.705
+in the case like we have two Ns,
+
+150
+00:12:43.705 --> 00:12:46.750
+two Ys, then we just select randomly.
+
+151
+00:12:46.750 --> 00:12:50.300
+Otherwise, we always choose the majority.
+
+152
+00:12:50.460 --> 00:12:59.840
+Now, we've finished the explanation of k-Nearest Neighbor,
+
+153
+00:12:59.840 --> 00:13:02.495
+but I would like to mention that
+
+154
+00:13:02.495 --> 00:13:08.170
+k-Nearest Neighbor is also called the Lazy Learning Algorithm.
+
+155
+00:13:08.170 --> 00:13:11.835
+Why is it called the lazy learning?
+
+156
+00:13:11.835 --> 00:13:16.380
+Think. If we look at the algorithm,
+
+157
+00:13:16.380 --> 00:13:24.205
+we will find that this algorithm actually does not learn at all, right?
+
+158
+00:13:24.205 --> 00:13:35.075
+It only starts classifying an instance during the test phase.
+
+159
+00:13:35.075 --> 00:13:39.890
+Okay? So, it is called a lazy learning.
+
+160
+00:13:39.890 --> 00:13:43.555
+So it does not learn, but what does it do then?
+
+161
+00:13:43.555 --> 00:13:50.040
+It just compares a new instance without class label with
+
+162
+00:13:50.040 --> 00:13:59.165
+all the instances in your dataset with known classes.
+
+163
+00:13:59.165 --> 00:14:01.845
+But in this case,
+
+164
+00:14:01.845 --> 00:14:06.520
+we would ask how fast is k-Nearest Neighbor?
+
+165
+00:14:06.520 --> 00:14:10.410
+You see because it's a lazy learning algorithm,
+
+166
+00:14:10.410 --> 00:14:18.150
+it does not learn, is it still fast during testing phase?
+
+167
+00:14:18.150 --> 00:14:21.615
+As a matter of fact, it is not.
+
+168
+00:14:21.615 --> 00:14:26.215
+It can be very slow, because when the data is big,
+
+169
+00:14:26.215 --> 00:14:27.650
+we'd have a big data, right?
+
+170
+00:14:27.650 --> 00:14:29.115
+When data is big,
+
+171
+00:14:29.115 --> 00:14:35.220
+it has to go through all the instances and calculate their distance
+
+172
+00:14:35.220 --> 00:14:42.125
+because we never know what the new instance is.
+
+173
+00:14:42.125 --> 00:14:45.460
+So, we have to calculate on the fly.
+
+174
+00:14:45.930 --> 00:14:53.995
+So we need to figure out a way to speed up this k-Nearest Neighbor.
+
+175
+00:14:53.995 --> 00:14:59.730
+One way is, I already used this in this dataset as an example,
+
+176
+00:14:59.730 --> 00:15:02.825
+if there are six clusters,
+
+177
+00:15:02.825 --> 00:15:10.360
+we just use cluster representatives as the instances.
+
+178
+00:15:10.360 --> 00:15:12.315
+Instead of let's say,
+
+179
+00:15:12.315 --> 00:15:17.400
+each cluster has 10 or 20 data points,
+
+180
+00:15:17.400 --> 00:15:18.790
+if 20 data points,
+
+181
+00:15:18.790 --> 00:15:22.700
+I have a 120 data points here.
+
+182
+00:15:22.700 --> 00:15:26.975
+But if I just use the representatives of these clusters,
+
+183
+00:15:26.975 --> 00:15:30.215
+I only have six cluster data points.
+
+184
+00:15:30.215 --> 00:15:33.260
+Let's say one here, one here,
+
+185
+00:15:33.260 --> 00:15:36.410
+one here, one here. These are the six.
+
+186
+00:15:36.410 --> 00:15:42.150
+Maybe now I can do it much faster than 120.
+
+187
+00:15:42.150 --> 00:15:47.360
+It's six versus 120,
+
+188
+00:15:47.360 --> 00:15:55.780
+each cluster, instances, a cluster.
+
+189
+00:15:56.140 --> 00:16:00.940
+So this is a one way, but we can also do it the hierarchical way.
+
+190
+00:16:00.940 --> 00:16:03.075
+So if it's really big,
+
+191
+00:16:03.075 --> 00:16:09.230
+we represent using these representatives,
+
+192
+00:16:09.230 --> 00:16:13.230
+then after we decide this is the cluster,
+
+193
+00:16:13.230 --> 00:16:18.095
+then we zoom in and compare because it's so pure here in this case.
+
+194
+00:16:18.095 --> 00:16:21.290
+In reality, it's not that pure.
+
+195
+00:16:21.290 --> 00:16:28.280
+Then we can zoom in and do the k-Nearest Neighbor as we've explained before.
+
+196
+00:16:28.800 --> 00:16:33.000
+That's the end of k-Nearest Neighbor.
