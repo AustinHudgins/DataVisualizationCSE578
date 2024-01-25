@@ -1,0 +1,34 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from scipy.cluster.hierarchy import linkage, dendrogram
+import sqlite3
+
+dbfile = r"C:\Users\Austi\Git\DataVisualizationCSE578\Assignments\dinofunworld.db"
+
+# Create a SQL connection to our SQLite database    
+con = sqlite3.connect(dbfile)
+
+cur = con.cursor()
+
+visitorIDandsequences = []
+for row in cur.execute("SELECT visitorID, sequence FROM sequences where visitorID IN (165316, 1835254, 296394, 404385, 448990)"):
+    squence = row[1]
+    splitsquence = squence.split("-")
+    visitorIDandsequences.append([row[0],splitsquence])
+
+manuStats = pd.DataFrame.from_records(visitorIDandsequences, columns=['visitorID', 'sequence'])
+
+links = linkage(np.matrix(manuStats['sequence'].values.tolist()), 'average')
+
+dendrogram(links, labels=manuStats['visitorID'].values.tolist())
+
+plt.ylabel('Distance')
+plt.xlabel('Visitor ID')
+plt.title('Dendrogram of Trajectories of 5 Visitors to the Park')
+plt.show()
+
+
+# Be sure to close the connection
+con.close()
+                   
