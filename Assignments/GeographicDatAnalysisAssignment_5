@@ -1,0 +1,48 @@
+
+
+import pandas as pd
+import geopandas as gpd
+import numpy as np
+import libpysal
+import matplotlib.pyplot as plt
+import esda
+# %matplotlib inline
+ 
+incomeDataSet = pd.read_csv(libpysal.examples.get_path("usjoin.csv"))
+geoDataFrame = gpd.read_file(libpysal.examples.get_path("us48.shp"))
+merged_df = pd.merge(left=geoDataFrame, left_on='STATE_NAME', right=incomeDataSet, right_on='Name')
+merged_df.plot(column="2009")
+
+plt.gca().legend(loc='upper right')
+plt.title('Per Capita Income of US States on Choropleth Map')
+plt.xlabel('US Income')
+
+plt.show()
+
+incomeCSV = libpysal.io.open(libpysal.examples.get_path("usjoin.csv"))
+
+geoDataFrame = gpd.read_file(libpysal.examples.get_path("us48.shp"))
+
+geoDataFrame['centroid_col'] = geoDataFrame.centroid
+geoDataFrame['income'] = np.array(incomeCSV.by_col("2009"))
+
+centroids = list(geoDataFrame['centroid_col'])
+centriodDataFrame = pd.DataFrame({'y':[centroids[i].y for i in range(len(centroids))],
+                   'x':[centroids[i].x for i in range(len(centroids))],
+                   'data':list(geoDataFrame['income'])})
+
+base = geoDataFrame.plot(color='white',edgecolor='black')
+
+centriodDataFrame.plot(kind='scatter',x='x', y='y',s=centriodDataFrame['data']*.001, ax=base)
+
+plt.title('Proportional Symbol Map')
+plt.xlabel('US Income')
+plt.show()
+
+f = libpysal.io.open(libpysal.examples.get_path("usjoin.csv"))
+y = np.array(f.by_col['2009'])
+w = libpysal.weights.Rook.from_dataframe(geoDataFrame,use_index=False)
+print(libpysal.examples.get_path("states48.gal"))
+mi = esda.Moran(y, w, two_tailed=False)
+mi1 = round(mi.I,4)
+print(mi1)
