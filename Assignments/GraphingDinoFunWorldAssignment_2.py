@@ -47,6 +47,7 @@ def barchart():
     plt.xlabel("Food Stalls")
     plt.ylabel("Number of Visits")
     plt.title("Total Visits to Food Stalls")
+    plt.show()
 
 
 def linegraph():
@@ -94,6 +95,8 @@ plt.xlabel('Attraction')
 plt.ylabel('Visitor Count')
 plt.show()
 print(visitsSorted)
+
+barchart()
 # # Be sure to close the connection
 con.close()
                    
