@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt 
 from statsmodels.graphics.mosaicplot import mosaic
+from scipy import stats
 
 
 csvfile = r"Project\adult.csv"
@@ -69,69 +70,130 @@ def bar_graph_of_occupations_by_income_groups():
 def donut_graphs_of_occupantions_by_income_groups():
     
     
-    # del dictOfUniqueOccupation['Armed-Forces']
-    # del dictOfUniqueOccupationUnder50k['Armed-Forces']  
-    arrayOfPplPerOccupationUnder50k = dictOfUniqueOccupationUnder50k.values()
+    # I condensed 'Armed-Forces' and Priv-house-serv' into Other-service clean up outliers that dont afeect or help
 
-    plt.pie(arrayOfPplPerOccupationUnder50k,shadow=False,autopct='%1.2f%%',textprops={'fontsize':13}, colors=arrayOfColors, labels=dictOfUniqueOccupation.keys(), labeldistance =1.01 )		
-    plt.title("Title")
+    dictOfUniqueOccupationUnder50k['Other-service'] = dictOfUniqueOccupationUnder50k['Other-service'] + dictOfUniqueOccupationUnder50k['Armed-Forces'] + dictOfUniqueOccupationUnder50k['Priv-house-serv']
+    copyOfdictOfUniqueOccupation = dict(dictOfUniqueOccupation)
+    del copyOfdictOfUniqueOccupation['Armed-Forces']
+    del copyOfdictOfUniqueOccupation['Priv-house-serv']
+    del dictOfUniqueOccupationUnder50k['Armed-Forces']
+    del dictOfUniqueOccupationUnder50k['Priv-house-serv']
+    arrayOfPplPerOccupationUnder50k = dictOfUniqueOccupationUnder50k.values()
+    
+    plt.pie(arrayOfPplPerOccupationUnder50k,shadow=False,autopct='%1.2f%%',textprops={'fontsize':13}, colors=arrayOfColors, labels=copyOfdictOfUniqueOccupation.keys(), labeldistance =1.01 )		
+    plt.title("Job market for income at or under 50k", loc='center')
     plt.axis("equal")
     plt.gcf().gca().add_artist(plt.Circle( (0,0), 0.7, color='white'))
     plt.show() 
-
-    # del dictOfUniqueOccupationOver50k['Armed-Forces']
-    arrayOfPplPerOccupationOver50k = dictOfUniqueOccupationOver50k.values()
-
-    plt.pie(arrayOfPplPerOccupationOver50k,shadow=False,autopct='%1.2f%%',textprops={'fontsize':13}, colors=arrayOfColors, labels=dictOfUniqueOccupation.keys(), labeldistance =1.01 )		
-    plt.title("Title")
+    # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    dictOfUniqueOccupationOver50k['Other-service'] = dictOfUniqueOccupationOver50k['Other-service'] + dictOfUniqueOccupationOver50k['Armed-Forces'] + dictOfUniqueOccupationOver50k['Priv-house-serv']
+    del dictOfUniqueOccupationOver50k['Armed-Forces']
+    del dictOfUniqueOccupationOver50k['Priv-house-serv']
+    arrayOfPplPerOccupationOver50k = dictOfUniqueOccupationOver50k.values()\
+    
+    plt.pie(arrayOfPplPerOccupationOver50k,shadow=False,autopct='%1.2f%%',textprops={'fontsize':13}, colors=arrayOfColors, labels=copyOfdictOfUniqueOccupation.keys(), labeldistance =1.01 )		
+    plt.title("Job market for income over 50k", loc='center')
     plt.axis("equal")
     plt.gcf().gca().add_artist(plt.Circle( (0,0), 0.7, color='white'))
     plt.show()
 
-
-def Scatter_plot_age_vs_college():
+def Scatter_plot_age_vs_Captial_loss_by_income():
     # User Story 3 - People that didnt finish college, over all ages
 
-
-    #remove any one that didnt finish college
-    indexeducation = adultsStats[(dictOfAgeAndSchoolAndIncome['education'] == 'Bachelors') | (dictOfAgeAndSchoolAndIncome['education'] == 'Prof-school')| (dictOfAgeAndSchoolAndIncome['education'] == 'Assoc-acdm')| (dictOfAgeAndSchoolAndIncome['education'] == 'Assoc-voc')| (dictOfAgeAndSchoolAndIncome['education'] == 'Doctorate')| (dictOfAgeAndSchoolAndIncome['education'] == 'Masters')].index
-    dictOfAgeAndSchoolAndIncome.drop(indexeducation, inplace=True)
-
-    dfAgeAndSchoolAndIncome = adultsStats[['age','hours-per-week','income']]
+    df = adultsStats[['age','capital-loss','income']]
 
     ageOfPeopleUnder50k = []
-    hoursOfPeopleUnder50k = []
-    ageOfPeopleOver50k = []
-    hoursOfPeopleOver50k = []
-    for row in dictOfAgeAndSchoolAndIncome.iterrows():
+    capitalLossOfPeopleUnder50k = []
+    agePeopleOver50k = []
+    capitalLossOfPeopleOver50k = []
+    for row in df.iterrows():
 
         age = row[1][0]
-        hours = row[1][1]
+        capitalLoss = row[1][1]
         income = row[1][2]
         
-        if(age == 'NULL' or hours == 'NULL' or income == 'NULL'):
+        if(age == 'NULL' or capitalLoss == 'NULL' or income == 'NULL'):
             continue
         elif(income == '<=50K'):
             ageOfPeopleUnder50k.append(age)
-            hoursOfPeopleUnder50k.append(hours)
+            capitalLossOfPeopleUnder50k.append(capitalLoss)
         elif(income == '>50K'):
-            ageOfPeopleOver50k.append(age)
-            hoursOfPeopleOver50k.append(hours)
+            agePeopleOver50k.append(age)
+            capitalLossOfPeopleOver50k.append(capitalLoss)
         else:
             print("Something is wrong check for this income:" + str(income))
     x1 = ageOfPeopleUnder50k
-    y1 = hoursOfPeopleUnder50k 
-    x2 = ageOfPeopleOver50k 
-    y2 = hoursOfPeopleOver50k
+    y1 = capitalLossOfPeopleUnder50k 
+    x2 = agePeopleOver50k 
+    y2 = capitalLossOfPeopleOver50k
 
     plt.scatter(x1,y1)
     plt.scatter(x2,y2)
     plt.show()
 
-def mosaic_plot_location_by_gender():
-     
+def Scatter_plot_age_vs_Captial_avg_gain_by_income():
+    # User Story 3 - People that didnt finish college, over all ages
 
-     
+    df = adultsStats[['age','capital-gain','income']]
+    # ageOfPeopleUnder50k = []
+    # capitalGainOfPeopleUnder50k = []
+    # agePeopleOver50k = []
+    # capitalGainOfPeopleOver50k = []
+    dictAgeAndGainUnder50k = {}
+    dictAgeAndGainOver50k = {}
+    
+    nonzeroCaptialGain = []
+    for val in df['capital-gain']:
+        if val != 0:
+            nonzeroCaptialGain.append(val)
+
+    std = np.std(nonzeroCaptialGain)
+    
+    for row in df.iterrows():
+
+        age = row[1][0]
+        capitalGain = row[1][1]
+        income = row[1][2]
+        
+        
+        if(age == 'NULL' or capitalGain == 'NULL' or income == 'NULL'):
+            continue
+        elif(income == '<=50K' and capitalGain < 2 * std):
+            if(age in dictAgeAndGainUnder50k):
+                dictAgeAndGainUnder50k[age][0] = dictAgeAndGainUnder50k[age][0] + capitalGain
+                dictAgeAndGainUnder50k[age][1] = dictAgeAndGainUnder50k[age][1] + 1
+            else:
+                dictAgeAndGainUnder50k[age] = [capitalGain,1]
+        elif(income == '>50K'and capitalGain < 2 * std):
+            if(age in dictAgeAndGainOver50k):
+                dictAgeAndGainOver50k[age][0] = dictAgeAndGainOver50k[age][0] + capitalGain
+                dictAgeAndGainOver50k[age][1] = dictAgeAndGainOver50k[age][1] + 1
+            else:
+                dictAgeAndGainOver50k[age] = [capitalGain,1]
+        else:
+            continue
+            print("Something is wrong check for this income:" + str(capitalGain) )
+    
+    #https://www.freecodecamp.org/news/python-sort-dictionary-by-key/
+    dictAgeAndGainUnder50k = dict(sorted(dictAgeAndGainUnder50k.items()))
+    dictAgeAndGainOver50k = dict(sorted(dictAgeAndGainOver50k.items()))
+    
+    for key in dictAgeAndGainUnder50k:
+        dictAgeAndGainUnder50k[key] = round((dictAgeAndGainUnder50k[key][0]/dictAgeAndGainUnder50k[key][1]),2)
+    for key in dictAgeAndGainOver50k:
+        dictAgeAndGainOver50k[key] = round((dictAgeAndGainOver50k[key][0]/dictAgeAndGainOver50k[key][1]),2)
+    
+    x1 = dictAgeAndGainUnder50k.keys()
+    y1 = dictAgeAndGainUnder50k.values()
+    x2 = dictAgeAndGainOver50k.keys()
+    y2 = dictAgeAndGainOver50k.values()
+    plt.plot(x1,y1,color1)
+    plt.plot(x2,y2,color2)
+    plt.title("Average Capital Gain by age based on Income")
+    plt.show()
+
+
+def mosaic_plot_location_by_gender_by_income():
     df = adultsStats[['native-counntry','sex','income']]
 
     dict = {('Inside Of USA', 'Female', 'Income > 50k') : 0,
@@ -178,19 +240,19 @@ def mosaic_plot_location_by_gender():
                     dict[('Outside Of USA', 'Male', 'Income > 50k')] = dict[('Outside Of USA', 'Male', 'Income > 50k')] + 1
             else:
                 print("THERE MIGHT BE A PROBLEM WITH THIS: " + row)
-                
-    print(dict)
+
     #https://www.statsmodels.org/devel/generated/statsmodels.graphics.mosaicplot.mosaic.html
-    # dictOfColor = {('Inside Of USA', 'Female', 'above50k') : 'b',
-    #         ('Inside Of USA', 'Male', 'above50k') : 'g', 
-    #         ('Outside Of USA', 'Female', 'above50k') : 0, 
-    #         ('Outside Of USA', 'Male', 'above50k') : 0,
-    #         ('Inside Of USA', 'Female', 'below50k') : 0,
-    #         ('Inside Of USA', 'Male', 'below50k') : 0, 
-    #         ('Outside Of USA', 'Female', 'below50k') : 0, 
-    #         ('Outside Of USA', 'Male', 'below50k') : 0  }
+    dictOfColor = {('Inside Of USA', 'Female', 'Income <= 50k') : 'goldenrod',
+            ('Inside Of USA', 'Female', 'Income > 50k') : 'darkgoldenrod', 
+            ('Inside Of USA', 'Male', 'Income <= 50k') : 'orange', 
+            ('Inside Of USA', 'Male', 'Income > 50k') : 'darkorange',
+            ('Outside Of USA', 'Female', 'Income <= 50k') : 'cornflowerblue',
+            ('Outside Of USA', 'Female', 'Income > 50k') : 'royalblue', 
+            ('Outside Of USA', 'Male', 'Income <= 50k') : 'skyblue', 
+           ('Outside Of USA', 'Male', 'Income > 50k') : 'deepskyblue'  }
     label=lambda k:{k:str(round(dict[k]/sum(dict.values())*100,1))+'%'}[k]
-    mosaic(dict, gap=0.003,properties={},labelizer=label)
+    #https://stackoverflow.com/questions/61704718/choosing-another-color-palette-for-a-mosaic-plot
+    mosaic(dict, gap=0.003,labelizer=label,  properties = lambda key: {'color': dictOfColor[key]})
     plt.title("Birthright US Citizens and Gender compared by Income Groups")
     plt.show()
         
@@ -199,8 +261,9 @@ def mosaic_plot_location_by_gender():
 
 # bar_graph_of_occupations_by_income_groups()
 # donut_graphs_of_occupantions_by_income_groups()
-# Scatter_plot_age_vs_college()
-mosaic_plot_location_by_gender()
+# Scatter_plot_age_vs_Captial_loss_by_income()
+Scatter_plot_age_vs_Captial_avg_gain_by_income()
+# mosaic_plot_location_by_gender_by_income()
 
 
 # print(uniqueOccupation)
