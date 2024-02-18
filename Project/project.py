@@ -97,7 +97,7 @@ def donut_graphs_of_occupantions_by_income_groups():
     plt.gcf().gca().add_artist(plt.Circle( (0,0), 0.7, color='white'))
     plt.show()
 
-def Scatter_plot_age_vs_Captial_loss_by_income():
+def Line_plot_age_vs_Captial_loss_by_income():
     # User Story 3 - People that didnt finish college, over all ages
 
     df = adultsStats[['age','capital-loss','income']]
@@ -131,7 +131,7 @@ def Scatter_plot_age_vs_Captial_loss_by_income():
     plt.scatter(x2,y2)
     plt.show()
 
-def Scatter_plot_age_vs_Captial_avg_gain_by_income():
+def Line_plot_age_vs_Captial_avg_gain_by_income():
     # User Story 3 - People that didnt finish college, over all ages
 
     df = adultsStats[['age','capital-gain','income']]
@@ -191,7 +191,6 @@ def Scatter_plot_age_vs_Captial_avg_gain_by_income():
     plt.plot(x2,y2,color2)
     plt.title("Average Capital Gain by age based on Income")
     plt.show()
-
 
 def mosaic_plot_location_by_gender_by_income():
     df = adultsStats[['native-counntry','sex','income']]
@@ -256,16 +255,103 @@ def mosaic_plot_location_by_gender_by_income():
     plt.title("Birthright US Citizens and Gender compared by Income Groups")
     plt.show()
         
+def Education_and_avg_capital_loss_by_income_group():
+    df = adultsStats[['capital-loss','education-num','income']]
 
+    dictLossAndEducationUnder50k = {}
+    dictLossAndEducationOver50k = {}
+
+    # nonzeroCaptialloss = []
+    # for val in df['capital-loss']:
+    #     if val != 0:
+    #         nonzeroCaptialloss.append(val)
+
+    # std = np.std(nonzeroCaptialloss)
+
+    # print(std)
+    # print(df)
+    for row in df.iterrows():
+
+        loss = row[1][0]
+        education = row[1][1]
+        income = row[1][2]
+        
+        if(loss == 'NULL' or education == 'NULL' or income == 'NULL'):
+            continue
+        elif(income == '<=50K'):
+            if(education in dictLossAndEducationUnder50k):
+                dictLossAndEducationUnder50k[education][0] = dictLossAndEducationUnder50k[education][0] + loss
+                dictLossAndEducationUnder50k[education][1] = dictLossAndEducationUnder50k[education][1] + 1
+            else:
+                dictLossAndEducationUnder50k[education] = [loss,1]
+        elif(income == '>50K'):
+            if(education in dictLossAndEducationOver50k):
+                dictLossAndEducationOver50k[education][0] = dictLossAndEducationOver50k[education][0] + loss
+                dictLossAndEducationOver50k[education][1] = dictLossAndEducationOver50k[education][1] + 1
+            else:
+                dictLossAndEducationOver50k[education] = [loss,1]
+        else:
+            continue
+    
+    for key in dictLossAndEducationOver50k:
+        dictLossAndEducationOver50k[key] = round((dictLossAndEducationOver50k[key][0]/dictLossAndEducationOver50k[key][1]),2)
+    for key in dictLossAndEducationUnder50k:
+        dictLossAndEducationUnder50k[key] = round((dictLossAndEducationUnder50k[key][0]/dictLossAndEducationUnder50k[key][1]),2)
+    
+    x1 = dictLossAndEducationUnder50k.keys()
+    y1 = dictLossAndEducationUnder50k.values()
+    x2 = dictLossAndEducationOver50k.keys()
+    y2 = dictLossAndEducationOver50k.values()
+    print(x1)
+    print(y1)
+    plt.scatter(x1,y1, color = color1)
+    plt.scatter(x2,y2, color = color2)
+    plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,14,15,16])
+    plt.title("Average Capital Loss by Education Level based on Income")
+    plt.ylabel("Average Captial Loss ($)")
+    plt.xlabel("Education Level")
+    plt.legend(["Income =< 50k", "Income > 50k"])
+    plt.show()
+
+def box_plot_workclass_by_Income_under_50k():
+    df = adultsStats[['hours-per-week','income']]
+
+    dictHoursWorkPerWeekByIncome = {'under50k' : [],
+                                    'over50k' : []}
+
+    for row in df.iterrows():
+        hoursPerWeek= row[1][0]
+        income = row[1][1]
+
+        
+        
+        if(hoursPerWeek == 'NULL' or income == 'NULL'):
+            continue
+        if(income == '<=50K'):
+            dictHoursWorkPerWeekByIncome['under50k'].append(hoursPerWeek)
+        elif(income == '>50K'):
+            dictHoursWorkPerWeekByIncome['over50k'].append(hoursPerWeek)
+        else:
+            print("Something is wrong check for this income:" + str(income))
+
+    fig, ax = plt.subplots()
+    ax.boxplot(dictHoursWorkPerWeekByIncome.values())
+    ax.set_xticklabels(dictHoursWorkPerWeekByIncome.keys())
+    plt.title("Hours worked per week by Income Group")
+    plt.ylabel("Hours worked per week")
+    plt.xlabel("Income ($)")
+    
+    plt.show()
 
 
 # bar_graph_of_occupations_by_income_groups()
 # donut_graphs_of_occupantions_by_income_groups()
-# Scatter_plot_age_vs_Captial_loss_by_income()
-Scatter_plot_age_vs_Captial_avg_gain_by_income()
+# Line_plot_age_vs_Captial_loss_by_income()
+# Line_plot_age_vs_Captial_avg_gain_by_income()
 # mosaic_plot_location_by_gender_by_income()
-
-
+# Education_and_avg_capital_loss_by_income_group()
+    
+box_plot_workclass_by_Income_under_50k()
 # print(uniqueOccupation)
 #print(adultsStats[adultsStats['workclass'] == '?']) FINDS SPECFIC VAL in COL
 #print(adultsStats['occupation'].unique())  FINDS UNQUIE VALS IN COL
