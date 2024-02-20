@@ -81,7 +81,7 @@ def donut_graphs_of_occupantions_by_income_groups():
     arrayOfPplPerOccupationUnder50k = dictOfUniqueOccupationUnder50k.values()
     
     plt.pie(arrayOfPplPerOccupationUnder50k,shadow=False,autopct='%1.2f%%',textprops={'fontsize':13}, colors=arrayOfColors, labels=copyOfdictOfUniqueOccupation.keys(), labeldistance =1.01 )		
-    plt.title("Job market for income at or under 50k", loc='center')
+    plt.title("Job market for income at or under 50k", loc='center', fontsize = 20)
     plt.axis("equal")
     plt.gcf().gca().add_artist(plt.Circle( (0,0), 0.7, color='white'))
     plt.show() 
@@ -92,7 +92,7 @@ def donut_graphs_of_occupantions_by_income_groups():
     arrayOfPplPerOccupationOver50k = dictOfUniqueOccupationOver50k.values()\
     
     plt.pie(arrayOfPplPerOccupationOver50k,shadow=False,autopct='%1.2f%%',textprops={'fontsize':13}, colors=arrayOfColors, labels=copyOfdictOfUniqueOccupation.keys(), labeldistance =1.01 )		
-    plt.title("Job market for income over 50k", loc='center')
+    plt.title("Job market for income over 50k", loc='center', fontsize = 20)
     plt.axis("equal")
     plt.gcf().gca().add_artist(plt.Circle( (0,0), 0.7, color='white'))
     plt.show()
@@ -189,6 +189,7 @@ def Line_plot_age_vs_Captial_avg_gain_by_income():
     y2 = dictAgeAndGainOver50k.values()
     plt.plot(x1,y1,color1)
     plt.plot(x2,y2,color2)
+    plt.legend(["Income =< 50k", "Income > 50k"])
     plt.title("Average Capital Gain by age based on Income")
     plt.show()
 
@@ -336,16 +337,17 @@ def box_plot_workclass_by_Income_under_50k():
 
     fig, ax = plt.subplots()
     ax.boxplot(dictHoursWorkPerWeekByIncome.values())
-    ax.set_xticklabels(dictHoursWorkPerWeekByIncome.keys())
-    plt.title("Hours worked per week by Income Group")
-    plt.ylabel("Hours worked per week")
-    plt.xlabel("Income ($)")
+    ax.set_xticklabels(labels = dictHoursWorkPerWeekByIncome.keys(),  fontsize = 20)
+    ax.set_yticklabels(["0","10","20","30","40","50","60","70","80","90","100"],fontsize = 20)
+    plt.title("Hours worked per week by Income Group" , fontsize = 25)
+    plt.ylabel("Hours worked per week" , fontsize = 20)
+    plt.xlabel("Income ($)" , fontsize = 20)
     
     plt.show()
 
 
 # bar_graph_of_occupations_by_income_groups()
-# donut_graphs_of_occupantions_by_income_groups()
+#donut_graphs_of_occupantions_by_income_groups()
 # Line_plot_age_vs_Captial_loss_by_income()
 # Line_plot_age_vs_Captial_avg_gain_by_income()
 # mosaic_plot_location_by_gender_by_income()
