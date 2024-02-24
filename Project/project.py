@@ -190,7 +190,9 @@ def Line_plot_age_vs_Captial_avg_gain_by_income():
     plt.plot(x1,y1,color1)
     plt.plot(x2,y2,color2)
     plt.legend(["Income =< 50k", "Income > 50k"])
-    plt.title("Average Capital Gain by age based on Income")
+    plt.title("Average Capital Gain by Age based on Income")
+    plt.ylabel("Average Captial Gain ($)")
+    plt.xlabel("Age")
     plt.show()
 
 def mosaic_plot_location_by_gender_by_income():
@@ -348,12 +350,12 @@ def box_plot_workclass_by_Income_under_50k():
 
 # bar_graph_of_occupations_by_income_groups()
 #donut_graphs_of_occupantions_by_income_groups()
-# Line_plot_age_vs_Captial_loss_by_income()
-# Line_plot_age_vs_Captial_avg_gain_by_income()
+#Line_plot_age_vs_Captial_loss_by_income()
+Line_plot_age_vs_Captial_avg_gain_by_income()
 # mosaic_plot_location_by_gender_by_income()
 # Education_and_avg_capital_loss_by_income_group()
     
-box_plot_workclass_by_Income_under_50k()
+#box_plot_workclass_by_Income_under_50k()
 # print(uniqueOccupation)
 #print(adultsStats[adultsStats['workclass'] == '?']) FINDS SPECFIC VAL in COL
 #print(adultsStats['occupation'].unique())  FINDS UNQUIE VALS IN COL
